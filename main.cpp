@@ -27,11 +27,29 @@ class ContaBancaria {
 
 };
 
+class Cliente {
+    private:
+        string nomeCliente;
+        string cpfCliente;
+
+    public:
+        Cliente(string nome, string cpf){
+            setNome(nome);
+            setCpf(cpf);
+        }
+        void setNome(string nome){
+            this->nomeCliente = nome;
+        }
+        void setCpf(string cpf){
+            this->cpfCliente = cpf;
+        }
+};
+
 int main() {
 
-    //Cliente cliente1("Ana", "111.111.111-11");
-    //Cliente cliente2("Bruno", "222.222.222-22");
-    //Cliente cliente3("Carla", "333.333.333-33");
+    Cliente cliente1("Ana", "111.111.111-11");
+    Cliente cliente2("Bruno", "222.222.222-22");
+    Cliente cliente3("Carla", "333.333.333-33");
 
     //ContaBancaria conta1("1001", cliente1, 1000.0);
     //ContaBancaria conta2("1002", cliente2);

@@ -8,16 +8,21 @@ class Cliente {
         string cpfCliente;
 
     public:
+        Cliente(){
+
+        }
         Cliente(string nome, string cpf){
             setNome(nome);
             setCpf(cpf);
         }
+
         void setNome(string nome){
             this->nomeCliente = nome;
         }
         void setCpf(string cpf){
             this->cpfCliente = cpf;
         }
+
         string getNome(){
             return this->nomeCliente;
         }
@@ -28,28 +33,55 @@ class Cliente {
 
 class ContaBancaria {
     private:
-        int saldo;
+        int identConta;
+        Cliente clienteConta;
+        double saldoConta;
 
     public:
-        ContaBancaria(){
-            this->saldo = 0;
-            cout << "Conta iniciada" << endl;
-        }
-        int getSaldo() {return this->saldo;}
-        void depositar(int valor) {
-            if (valor < 0) {    
-                return;
-            }
-            this->saldo += valor;
-        }
-        void sacar(int valor) {
-            if (this->saldo < valor) {
-                return;
-            }
-            this->saldo -= valor;
+        ContaBancaria(int ident, Cliente cliente, double saldo = 0.0){
+            setIdent(ident);
+            setCliente(cliente);
+            setSaldo(saldo);
         }
 
-};
+        void setIdent(int ident){
+            this->identConta = ident;
+        }
+        void setCliente(Cliente cliente){
+            this->clienteConta = cliente;
+        }
+        void setSaldo(double saldo){
+            this->saldoConta += saldo;
+        }
+
+        void exibirSaldo(){
+            cout << "Saldo atual da conta " << this->identConta << ": " << this->saldoConta << endl;
+        }
+        void exibirInformacoes(){
+            cout << "Titular: "+clienteConta.getNome()+", CPF: "+clienteConta.getCpf() << endl;
+            cout << "Numero da Conta: " << this->identConta << ", Saldo: R$ " << this->saldoConta << endl;
+        }
+
+        void transferir(double valor, ContaBancaria &destinatario){
+            
+            this->saldoConta -= valor;
+            destinatario.setSaldo(valor);
+
+            cout << "Transferido: R$ " << valor << " da conta " << this->identConta << " para a conta " << destinatario.identConta << endl;
+
+        }
+
+        void transferir(double valor, ContaBancaria &destinatario1, ContaBancaria &destinatario2){
+
+            this->saldoConta -= valor;
+            destinatario1.setSaldo(valor/2);
+            destinatario2.setSaldo(valor/2);
+
+            cout << "Transferido: R$ " << valor << " para cada conta (" << destinatario1.identConta << " e " << destinatario2.identConta << ") da conta " << this->identConta << endl;
+
+        }
+
+    };
 
 int main() {
 
@@ -57,43 +89,20 @@ int main() {
     Cliente cliente2("Bruno", "222.222.222-22");
     Cliente cliente3("Carla", "333.333.333-33");
 
-    //ContaBancaria conta1("1001", cliente1, 1000.0);
-    //ContaBancaria conta2("1002", cliente2);
-    //ContaBancaria conta3("1003", cliente3);
+    ContaBancaria conta1(1001, cliente1, 1000.0);
+    ContaBancaria conta2(1002, cliente2);
+    ContaBancaria conta3(1003, cliente3);
 
-    //conta1.exibirSaldo();
+    conta1.exibirSaldo();
 
-    //conta1.transferir(200.0, conta2);
+    conta1.transferir(200.0, conta2);
 
-    //conta1.transferir(300.0, conta2, conta3);
+    conta1.transferir(300.0, conta2, conta3);
 
-    //cout << endl;
-    //conta1.exibirInformacoes();
-    //conta2.exibirInformacoes();
-    //conta3.exibirInformacoes();
-
-    ContaBancaria contaJoao;
-
-    contaJoao.depositar(25);
-    contaJoao.sacar(10);
-    cout << contaJoao.getSaldo() << endl;
-    contaJoao.sacar(100);
-    cout << contaJoao.getSaldo() << endl;
-    contaJoao.depositar(-10);
-    cout << contaJoao.getSaldo() << endl;
+    cout << endl;
+    conta1.exibirInformacoes();
+    conta2.exibirInformacoes();
+    conta3.exibirInformacoes();
 
     return 0;
 }
-
-/*
-Saldo atual da conta 1001: R$ 1000
-Transferido: R$ 200 da conta 1001 para a conta 1002
-Transferido: R$ 150 para cada conta (1002 e 1003) da conta 1001
-
-Titular: Ana, CPF: 111.111.111-11
-Número da Conta: 1001, Saldo: R$ 500
-Titular: Bruno, CPF: 222.222.222-22
-Número da Conta: 1002, Saldo: R$ 350
-Titular: Carla, CPF: 333.333.333-33
-Número da Conta: 1003, Saldo: R$ 150
-*/

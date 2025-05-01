@@ -51,7 +51,7 @@ class ContaBancaria {
             this->clienteConta = cliente;
         }
         void setSaldo(double saldo){
-            this->saldoConta += saldo;
+            this->saldoConta = saldo;
         }
 
         void exibirSaldo(){
@@ -62,20 +62,38 @@ class ContaBancaria {
             cout << "Numero da Conta: " << this->identConta << ", Saldo: R$ " << this->saldoConta << endl;
         }
 
-        void transferir(double valor, ContaBancaria &destinatario){
-            
+        void depositar(double valor){
+            this->saldoConta += valor;
+        }
+        void sacar(double valor){
+            if(this->saldoConta < valor){
+                cout << "Saldo insuficiente para saque" << endl;
+                return;
+            }
             this->saldoConta -= valor;
-            destinatario.setSaldo(valor);
+        }
+
+        void transferir(double valor, ContaBancaria &destinatario){
+            if(this->saldoConta < valor){
+                cout << "Saldo insuficiente para transferencia" << endl;
+                return;
+            }
+
+            this->saldoConta -= valor;
+            destinatario.depositar(valor);
 
             cout << "Transferido: R$ " << valor << " da conta " << this->identConta << " para a conta " << destinatario.identConta << endl;
 
         }
-
         void transferir(double valor, ContaBancaria &destinatario1, ContaBancaria &destinatario2){
-
+            if(this->saldoConta < valor){
+                cout << "Saldo insuficiente para transferencia" << endl;
+                return;
+            }
+            
             this->saldoConta -= valor;
-            destinatario1.setSaldo(valor/2);
-            destinatario2.setSaldo(valor/2);
+            destinatario1.depositar(valor/2);
+            destinatario2.depositar(valor/2);
 
             cout << "Transferido: R$ " << valor << " para cada conta (" << destinatario1.identConta << " e " << destinatario2.identConta << ") da conta " << this->identConta << endl;
 

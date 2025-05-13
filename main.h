@@ -76,6 +76,12 @@ class ContaBancaria {
 
         // Realiza um depósito na conta
         void depositar(double valor){
+            if (valor <= 0)
+            {
+                cout << "Valor invalido para deposito" << endl;
+                return;
+            }
+            
             this->saldoConta += valor;
         }
         
@@ -85,6 +91,7 @@ class ContaBancaria {
                 cout << "Saldo insuficiente para saque" << endl;
                 return;
             }
+            
             this->saldoConta -= valor;
         }
 
